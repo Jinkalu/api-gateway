@@ -3,15 +3,9 @@ package com.trrings.gatewayservice.config;
 import com.trrings.gatewayservice.filter.AuthenticationFilter;
 import com.trrings.gatewayservice.filter.RouteValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
-import org.springframework.boot.autoconfigure.web.WebProperties;
-import org.springframework.cloud.gateway.config.GlobalCorsProperties;
-import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
@@ -25,22 +19,6 @@ public class GatewayConfig {
 
     @Autowired
     private RouteValidator routeValidator;
-
-    @Bean
-    public RouteLocator routeConfig(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route("user-service-filter", r -> r.path("/user-service/**")
-                        .filters(f -> f.filter(filter))
-                        .uri("lb://user-service"))
-                .route("post-service-filter", r -> r.path("/post-service/**")
-                        .filters(f -> f.filter(filter))
-                        .uri("lb://post-service"))
-                .route("openapi", r -> r.path("/v3/api-docs/**")
-                        .filters(f -> f.filter(filter)
-                                .rewritePath("/v3/api-docs/(?<segment>.*)", "/${segment}/v3/api-docs"))
-                        .uri("lb://api-gateway"))
-                .build();
-    }
 
 
     @Bean
