@@ -61,10 +61,10 @@ public class AuthenticationFilter implements GatewayFilter, Ordered {
                     .errors(List.of("Invalid token"))
                     .build()));
         }
-        exchange.getRequest()
+/*        exchange.getRequest()
                 .mutate()
                 .header("X-Gateway-Token",jwtService.getApiKey())
-                .build();
+                .build();*/
 
         return chain.filter(exchange.mutate().request(request).build());
     }
